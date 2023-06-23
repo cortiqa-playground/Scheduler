@@ -40,8 +40,7 @@ jobs:
           service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
     start program:
-    runs-on: ubuntu-latest  
-    steps:        
+             
       - name: Deploy the Scheduler - Start Program
         needs: [build-configuration]
         if: ${{env.schedule !== schedule/start_program/schedule}}
