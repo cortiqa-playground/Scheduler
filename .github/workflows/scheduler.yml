@@ -40,9 +40,8 @@ jobs:
           service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
     start program:
-             
+
       - name: Deploy the Scheduler - Start Program
-        needs: [build-configuration]
         if: ${{env.schedule !== schedule/start_program/schedule}}
         run: |
            sed "" scheduler/start_program.env >> $GITHUB_ENV
