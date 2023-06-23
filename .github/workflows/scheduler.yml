@@ -39,7 +39,7 @@ jobs:
           workload_identity_provider: "projects/${{ env.PROJECT_CODE }}/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
           service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
-  start program:
+    start program:
     steps:        
       - name: Deploy the Scheduler - Start Program
         needs: [build-configuration]
