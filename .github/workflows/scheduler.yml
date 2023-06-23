@@ -39,22 +39,22 @@ jobs:
           workload_identity_provider: "projects/${{ env.PROJECT_CODE }}/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
           service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
-  start program:
-    steps:        
-      - name: Deploy the Scheduler - Start Program
-        needs: build-configuration
-        if: ${{env.schedule !== schedule/start_program/*}}
-        run: |
-            sed "" scheduler/start_program.env >> $GITHUB_ENV
-            JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
-            if [ $JOBS -eq 0 ]; 
-            then 
-            gcloud scheduler jobs create http notify-start-program \
-            --description="Scheduler to trigger start of a program" \
-            --schedule=${{env.schedule}} \
-            --time-zone=${{env.time-zone}} \
-            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
-            --location=${{env.REGION}} \
-            --http-method=POST \
-            --message-body='{"action":"start"}'
-            fi
+start program:
+  steps:        
+  - name: Deploy the Scheduler - Start Program
+    needs: [build-configuration]
+    if: ${{env.schedule !== schedule/start_program/schedule}}
+    run: |
+        sed "" scheduler/start_program.env >> $GITHUB_ENV
+        JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
+        if [ $JOBS -eq 0 ]; 
+        then 
+        gcloud scheduler jobs create http notify-start-program \
+        --description="Scheduler to trigger start of a program" \
+        --schedule=${{env.schedule}} \
+        --time-zone=${{env.time-zone}} \
+        --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+        --location=${{env.REGION}} \
+        --http-method=POST \
+        --message-body='{"action":"start"}'
+        fi
