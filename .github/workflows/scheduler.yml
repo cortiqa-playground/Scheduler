@@ -3,7 +3,10 @@ name: Deploy Scheduler
 on:
   push:
     branches:
-      - main
+      - develop
+      - release/internal
+      - release/staging
+      - release/prod
     
     paths:
       - 'scheduler/**'
@@ -17,7 +20,7 @@ env:
 
 
 jobs:
-  build-configuration:
+  build-scheduler:
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -26,6 +29,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Set Environment values
+        uses: ./.github/actions/setvars
+        with:
+          varFilePath: ./.github/variables/${{env.BRANCH-NAME}}.env
                      
       - name: Set Environment values
         uses: ./.github/scheduler
@@ -39,20 +47,19 @@ jobs:
           workload_identity_provider: "projects/${{ env.PROJECT_CODE }}/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
           service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
-    start program:
-
       - name: Deploy the Scheduler - Start Program
         run: |
-           sed "" scheduler/start_program.env >> $GITHUB_ENV
-           JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
-           if [ $JOBS -eq 0 ]; 
-           then 
-           gcloud scheduler jobs create http notify-start-program \
-           --description="Scheduler to trigger start of a program" \
-           --schedule=${{env.schedule}} \
-           --time-zone=${{env.time-zone}} \
-           --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
-           --location=${{env.REGION}} \
-           --http-method=POST \
-           --message-body='{"action":"start"}'
-          fi
+            sed "" scheduler/start_program >> $GITHUB_ENV
+        shell: bash
+            JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
+            if [ $JOBS -eq 0 ]; 
+            then 
+            gcloud scheduler jobs create http notify-start-program \
+            --description="Scheduler to trigger start of a program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST \
+            --message-body='{"action":"start"}'
+            fi
