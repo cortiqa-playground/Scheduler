@@ -3,10 +3,7 @@ name: Deploy Scheduler
 on:
   push:
     branches:
-      - develop
-      - release/internal
-      - release/staging
-      - release/prod
+      - main
     
     paths:
       - 'scheduler/**'
