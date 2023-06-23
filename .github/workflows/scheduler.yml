@@ -42,7 +42,7 @@ jobs:
     start program:
 
       - name: Deploy the Scheduler - Start Program
-        if: ${{env.schedule !== schedule/start_program/schedule}}
+        if: ${{env.schedule !== schedule/start_program}}
         run: |
            sed "" scheduler/start_program.env >> $GITHUB_ENV
            JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
