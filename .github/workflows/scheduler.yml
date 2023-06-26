@@ -46,8 +46,7 @@ jobs:
 
       - name: Deploy the Scheduler - Start Program
         run: |
-            sed "" scheduler/start_program >> $GITHUB_ENV
-        shell: bash
+            sed "" scheduler/start_program.env >> $GITHUB_ENV
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
@@ -63,8 +62,7 @@ jobs:
 
       - name: Deploy the Scheduler - Program Activation
         run: |
-            sed "" scheduler/program_activitation >> $GITHUB_ENV
-        shell: bash
+            sed "" scheduler/program_activitation.env >> $GITHUB_ENV
             JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
