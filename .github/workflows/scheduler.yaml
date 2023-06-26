@@ -39,7 +39,7 @@ jobs:
           service_account: github-service-account@prism-dev-030122.iam.gserviceaccount.com
 
       - name: Deploy the Scheduler - Start Program
-        if: ${{'env.schedule !== Scheduler/start_program/*'}}
+        if: ${{'env.schedule != Scheduler/start_program/*'}}
         run: |
             sed "" scheduler/start_program.env >> $GITHUB_ENV
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
@@ -56,7 +56,7 @@ jobs:
             fi
 
       - name: Deploy the Scheduler - Program Activation
-        if: ${{'env.schedule !== Scheduler/program_activation/*'}}
+        if: ${{'env.schedule != Scheduler/program_activation/*'}}
         run: |
             sed "" scheduler/program_activation.env >> $GITHUB_ENV
             JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
