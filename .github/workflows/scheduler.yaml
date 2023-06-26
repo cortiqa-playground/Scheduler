@@ -36,7 +36,7 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: "projects/629109295493/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
-          service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
+          service_account: github-service-account@prism-dev-030122.iam.gserviceaccount.com
 
       - name: Deploy the Scheduler - Start Program
         run: |
