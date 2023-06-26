@@ -27,16 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set Environment values
-        uses: ./.github/actions/setvars
-        with:
-          varFilePath: ./.github/variables/${{env.BRANCH-NAME}}.env
-                     
-      - name: Set Environment values
-        uses: ./.github/scheduler
-        with:
-          schedulerfilepath: ./.github/scheduler/${{env.PROGRAM-TYPE}}.env
-
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v0'
