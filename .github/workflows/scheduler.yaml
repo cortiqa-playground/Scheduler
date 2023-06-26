@@ -52,7 +52,7 @@ jobs:
 
       - name: Deploy the Scheduler - Program Activation
         run: |
-            sed "" scheduler/program_activitation.env >> $GITHUB_ENV
+            sed "" scheduler/program_activation.env >> $GITHUB_ENV
             JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
