@@ -31,7 +31,7 @@ jobs:
         uses: jitterbit/get-changed-files@v1
         id: files-changed
         with: 
-          format: space-delimitied
+          format: space-delimited
 
       - name: Print changed files
         run: | 
