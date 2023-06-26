@@ -60,3 +60,19 @@ jobs:
             --http-method=POST \
             --message-body='{"action":"start"}'
             fi
+
+      - name: Deploy the Scheduler - Program Activation
+        run: |
+            sed "" scheduler/program_activitation >> $GITHUB_ENV
+        shell: bash
+            JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
+            if [ $JOBS -eq 0 ]; 
+            then 
+            gcloud scheduler jobs create http program-activation \
+            --description="Scheduler to trigger setting up of start / end of Program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST
+            fi
