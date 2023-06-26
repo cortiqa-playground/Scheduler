@@ -31,8 +31,8 @@ jobs:
         id: auth
         uses: 'google-github-actions/auth@v0'
         with:
-          workload_identity_provider: "projects/629109295493/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
-          service_account: github-service-account@prism-dev-030122.iam.gserviceaccount.com
+          workload_identity_provider: "projects/${{ env.PROJECT_CODE }}/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
+          service_account: ${{ env.GITHUB_SERVICE_ACCOUNT }}
 
       - name: Deploy the Scheduler - Start Program
         run: |
@@ -42,10 +42,10 @@ jobs:
             then 
             gcloud scheduler jobs create http notify-start-program \
             --description="Scheduler to trigger start of a program" \
-            --schedule= "10 10 * * *" \
-            --time-zone= 'Asia/Kolkata' \
-            --uri="https://asia-south1-prism-dev-030122.cloudfunctions.net/crontab" \
-            --location= asia-south1 \
+            --schedule= ${{env.schedule}} \
+            --time-zone= ${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+            --location= ${{env.REGION}} \
             --http-method=POST \
             --message-body='{"action":"start"}'
             fi
@@ -58,9 +58,9 @@ jobs:
             then 
             gcloud scheduler jobs create http program-activation \
             --description="Scheduler to trigger setting up of start / end of Program" \
-            --schedule="10 00 * * *" \
-            --time-zone='Asia/Kolkata' \
-            --uri="https://asia-south1-prism-dev-030122.cloudfunctions.net/crontab" \
+            --schedule= ${{env.schedule}} \
+            --time-zone= ${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
             --location=asia-south1 \
             --http-method=POST
             fi
