@@ -27,10 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-
-      - run: |
-            sed "" ${{ inputs.varFilePath }} >> $GITHUB_ENV
-
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v0'
@@ -38,35 +34,17 @@ jobs:
           workload_identity_provider: "projects/629109295493/locations/global/workloadIdentityPools/github-actions-identity-pool/providers/github"
           service_account: github-service-account@prism-dev-030122.iam.gserviceaccount.com
 
+      - name: Set the environment variables
+        run: |
+          sed "" scheduler/start_program.env >> $GITHUB_ENV
+
+      
       - name: Deploy the Scheduler - Start Program
         if: ${{ env.schedule != 'Scheduler/program_activation/*' }}
         run: |
-            sed "" scheduler/start_program.env >> $GITHUB_ENV
+            
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
-            gcloud scheduler jobs create http notify-start-program \
-            --description="Scheduler to trigger start of a program" \
-            --schedule= ${{env.schedule}} \
-            --time-zone= ${{env.time-zone}} \
-            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
-            --location= ${{env.REGION}} \
-            --http-method=POST \
-            --message-body='{"action":"start"}'
-            fi
-
-      - name: Deploy the Scheduler - Program Activation
-        if: ${{ env.schedule != 'Scheduler/program_activation/*' }}
-        run: |
-            sed "" scheduler/program_activation.env >> $GITHUB_ENV
-            JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
-            if [ $JOBS -eq 0 ]; 
-            then 
-            gcloud scheduler jobs create http program-activation \
-            --description="Scheduler to trigger setting up of start / end of Program" \
-            --schedule= ${{env.schedule}} \
-            --time-zone= ${{env.time-zone}} \
-            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
-            --location=asia-south1 \
-            --http-method=POST
+              echo "I am now creating a new 'notify-start-program'"
             fi
