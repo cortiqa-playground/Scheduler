@@ -47,10 +47,6 @@ jobs:
       - name: Deploy the Scheduler - Start Program
         run: |
             sed "" scheduler/start_program.env >> $GITHUB_ENV
-<<<<<<< HEAD:.github/workflows/scheduler.yaml
-=======
-        shell: bash
->>>>>>> 9afd2e15ec6dbeb73985d0693f2774b6662a9701:.github/workflows/scheduler.yml
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
@@ -62,7 +58,6 @@ jobs:
             --location=${{env.REGION}} \
             --http-method=POST \
             --message-body='{"action":"start"}'
-<<<<<<< HEAD:.github/workflows/scheduler.yaml
             fi
 
       - name: Deploy the Scheduler - Program Activation
@@ -78,6 +73,4 @@ jobs:
             --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
             --location=${{env.REGION}} \
             --http-method=POST
-=======
->>>>>>> 9afd2e15ec6dbeb73985d0693f2774b6662a9701:.github/workflows/scheduler.yml
             fi
