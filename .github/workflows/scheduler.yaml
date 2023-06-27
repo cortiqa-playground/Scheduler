@@ -55,7 +55,7 @@ jobs:
         if: contains(steps.files-changed.outputs.modified,'start_program.env')
         run: |
              echo "Start Program env has been modified."
-             gcloud scheduler jobs update http notify-start-program --location=${{env.REGION}} \
+             gcloud scheduler jobs update notify-start-program --location=${{env.REGION}} \
              --description="Scheduler to trigger start of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
