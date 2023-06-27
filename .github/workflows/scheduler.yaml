@@ -148,7 +148,7 @@ jobs:
              --http-method=POST
              fi
 
-      - name: Deploy the Scheduler - Program Activation - MODIFY
+      - name: Deploy the Scheduler - Program Activation - ADD
         if: contains(steps.files-changed.outputs.added,'program_activation.env')
         run: |
              echo "Added file list ::::::::::::: ${{steps.files-changed.outputs.added}}"
