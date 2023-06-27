@@ -34,7 +34,11 @@ jobs:
           format: space-delimited
 
       - name: Print changed files
-        run: | 
+        run: |
+          echo "Print the files that have been Added:"
+          echo "${{ steps.files-changed.outputs.added }}"
+          echo "Print the files that are Renamed:"
+          echo "${{ steps.files-changed.outputs.renamed }}"
           echo "Print the files that have been modified"
           echo "${{steps.files-changed.outputs.modified}}"
 
