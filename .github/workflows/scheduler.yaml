@@ -58,5 +58,13 @@ jobs:
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
-              echo "I am now creating a new 'notify-start-program'"
+            gcloud scheduler jobs create http notify-start-program \
+            --description="Scheduler to trigger start of a program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST \
+            --message-body='{"action":"start"}'
             fi
+
