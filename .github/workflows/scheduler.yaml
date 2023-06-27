@@ -51,7 +51,6 @@ jobs:
         run: |
           sed "" scheduler/start_program.env >> $GITHUB_ENV
 
-      
       - name: Deploy the Scheduler - Start Program - MODIFY
         if: contains(steps.files-changed.outputs.modified,'start_program.env')
         run: |
@@ -87,3 +86,81 @@ jobs:
              --http-method=POST \
              --message-body='{"action":"start"}'
              fi
+
+      - name: Set the environment variables
+        run: |
+          sed "" scheduler/stop_program.env >> $GITHUB_ENV
+
+      - name: Deploy the Scheduler - Stop Program - MODIFY
+        if: contains(steps.files-changed.outputs.modified,'stop_program.env')
+        run: |
+             echo "Added file list ::::::::::::: ${{steps.files-changed.outputs.modified}}"
+             echo "Start Program env has been added."
+             JOBS=`gcloud scheduler jobs list | grep notify-stop-program | wc -l`
+             if [ $JOBS -eq 0 ]; 
+             then 
+             gcloud scheduler jobs create http notify-stop-program \
+             --description="Scheduler to trigger stop of a program" \
+             --schedule=${{env.schedule}} \
+             --time-zone=${{env.time-zone}} \
+             --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+             --location=${{env.REGION}} \
+             --http-method=POST \
+             --message-body='{"action":"end"}'
+             fi
+
+      - name: Deploy the Scheduler - Stop Program - ADD
+        if: contains(steps.files-changed.outputs.added,'stop_program.env')
+        run: |
+             echo "Added file list ::::::::::::: ${{steps.files-changed.outputs.added}}"
+             echo "Start Program env has been added."
+             JOBS=`gcloud scheduler jobs list | grep notify-stop-program | wc -l`
+             if [ $JOBS -eq 0 ]; 
+             then 
+             gcloud scheduler jobs create http notify-stop-program \
+             --description="Scheduler to trigger stop of a program" \
+             --schedule=${{env.schedule}} \
+             --time-zone=${{env.time-zone}} \
+             --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+             --location=${{env.REGION}} \
+             --http-method=POST \
+             --message-body='{"action":"end"}'
+             fi
+
+      - name: Set the environment variables
+        run: |
+          sed "" scheduler/program_activation.env >> $GITHUB_ENV
+
+      - name: Deploy the Scheduler - Program Activation - MODIFY
+        if: contains(steps.files-changed.outputs.modified,'program_activation.env')
+        run: |
+             echo "Added file list ::::::::::::: ${{steps.files-changed.outputs.modified}}"
+             echo "Start Program env has been added."
+             JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
+              if [ $JOBS -eq 0 ]; 
+              then 
+              gcloud scheduler jobs create http program-activation \
+              --description="Scheduler to trigger setting up of start / end of Program" \
+              --schedule=${{env.schedule}} \
+              --time-zone=${{env.time-zone}} \
+              --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+              --location=${{env.REGION}} \
+              --http-method=POST
+              fi
+
+      - name: Deploy the Scheduler - Program Activation - MODIFY
+        if: contains(steps.files-changed.outputs.added,'program_activation.env')
+        run: |
+             echo "Added file list ::::::::::::: ${{steps.files-changed.outputs.added}}"
+             echo "Start Program env has been added."
+             JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
+              if [ $JOBS -eq 0 ]; 
+              then 
+              gcloud scheduler jobs create http program-activation \
+              --description="Scheduler to trigger setting up of start / end of Program" \
+              --schedule=${{env.schedule}} \
+              --time-zone=${{env.time-zone}} \
+              --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+              --location=${{env.REGION}} \
+              --http-method=POST
+              fi
