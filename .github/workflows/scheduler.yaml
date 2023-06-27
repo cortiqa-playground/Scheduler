@@ -56,20 +56,17 @@ jobs:
 
       
       - name: Deploy the Scheduler - Start Program
-        if: ${{ 'env.schedule' != 'Scheduler/program_activation/*' }}
+        if: contains(${{steps.files-changed.outputs.modified}},'start_program.env')
         run: |
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
-            if [ $JOBS -eq 0 ]; 
-            then 
-            gcloud scheduler jobs create http notify-start-program \
-            --description="Scheduler to trigger start of a program" \
-            --schedule=${{env.schedule}} \
-            --time-zone=${{env.time-zone}} \
-            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
-            --location=${{env.REGION}} \
-            --http-method=POST \
-            --message-body='{"action":"start"}'
-            fi
+            echo "Start Program env has been modified."
+
+      - name: Deploy the Scheduler - Start Program
+        if: contains(${{steps.files-changed.outputs.added}},'start_program.env')
+        run: |
+             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
+             echo "Start Program env has been added."
+    
 
       - name: Deploy the Scheduler - Stop Program
         if: ${{ 'env.schedule' != 'Scheduler/stop_program/*' }}
