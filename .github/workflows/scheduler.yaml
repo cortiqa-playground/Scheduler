@@ -56,9 +56,8 @@ jobs:
 
       
       - name: Deploy the Scheduler - Start Program
-        if: ${{ env.schedule != 'Scheduler/program_activation/*' }}
+        if: ${{ 'env.schedule' != 'Scheduler/program_activation/*' }}
         run: |
-            
             JOBS=`gcloud scheduler jobs list | grep notify-start-program | wc -l`
             if [ $JOBS -eq 0 ]; 
             then 
@@ -72,3 +71,33 @@ jobs:
             --message-body='{"action":"start"}'
             fi
 
+      - name: Deploy the Scheduler - Stop Program
+        if: ${{ 'env.schedule' != 'Scheduler/stop_program/*' }}
+        run: |
+            JOBS=`gcloud scheduler jobs list | grep notify-stop-program | wc -l`
+            if [ $JOBS -eq 0 ]; 
+            then 
+            gcloud scheduler jobs create http notify-stop-program \
+            --description="Scheduler to trigger stop of a program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST \
+            --message-body='{"action":"end"}'
+            fi
+
+      - name: Deploy the Scheduler - Program Activation
+        if: ${{ 'env.schedule' != 'Scheduler/program_activation/*' }}
+        run: |
+            JOBS=`gcloud scheduler jobs list | grep program-activation | wc -l`
+            if [ $JOBS -eq 0 ]; 
+            then 
+            gcloud scheduler jobs create http program-activation \
+            --description="Scheduler to trigger setting up of start / end of Program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST
+            fi
