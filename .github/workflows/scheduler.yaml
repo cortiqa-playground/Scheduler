@@ -55,6 +55,7 @@ jobs:
       - name: Set the environment variables
         run: |
           sed "" scheduler/start_program.env >> $GITHUB_ENV
+        shell: bash
 
 
       - name: Deploy the Scheduler - Start Program - MODIFY
