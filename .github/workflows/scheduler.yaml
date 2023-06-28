@@ -60,7 +60,7 @@ jobs:
         if: contains(steps.files-changed.outputs.modified,'start_program.env')
         run: |
              echo "Start Program env has been modified."
-             gcloud scheduler jobs create http notify-start-program \
+             gcloud scheduler jobs create http notify start-program \
              --description="Scheduler to trigger start of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
@@ -73,7 +73,7 @@ jobs:
         if: contains(steps.files-changed.outputs.added,'start_program.env')
         run: |
              echo "Start Program env has been added."
-             gcloud scheduler jobs create http notify-start-program \
+             gcloud scheduler jobs create http notify start-program \
              --description="Scheduler to trigger start of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
@@ -90,7 +90,7 @@ jobs:
         if: contains(steps.files-changed.outputs.modified,'stop_program.env')
         run: |
              echo "Stop Program env has been added."
-             gcloud scheduler jobs update http notify-stop-program --location=${{env.REGION}} \
+             gcloud scheduler jobs create http notify stop-program \
              --description="Scheduler to trigger stop of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
@@ -103,7 +103,7 @@ jobs:
         if: contains(steps.files-changed.outputs.added,'stop_program.env')
         run: |
              echo "Stop Program env has been added."
-             gcloud scheduler jobs create http notify-stop-program \
+             gcloud scheduler jobs create http notify stop-program \
              --description="Scheduler to trigger stop of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
@@ -121,7 +121,7 @@ jobs:
         if: contains(steps.files-changed.outputs.modified,'program_activation.env')
         run: |
              echo "Program activation env has been added." 
-             gcloud scheduler jobs update http notify-program-activation --location=${{env.REGION}} \
+             gcloud scheduler jobs create http notify program-activation \
              --description="Scheduler to trigger setting up of start / end of Program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
