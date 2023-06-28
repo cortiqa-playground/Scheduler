@@ -55,7 +55,6 @@ jobs:
       - name: Set the environment variables
         run: |
           sed "" scheduler/start_program.env >> $GITHUB_ENV
-        shell: bash
 
       - name: Deploy the Scheduler - Start Program - MODIFY
         if: contains(steps.files-changed.outputs.modified,'start_program.env')
@@ -91,7 +90,7 @@ jobs:
         if: contains(steps.files-changed.outputs.modified,'stop_program.env')
         run: |
              echo "Stop Program env has been added."
-             gcloud scheduler jobs create http notify-stop-program \
+             gcloud scheduler jobs update http notify-stop-program \
              --description="Scheduler to trigger stop of a program" \
              --schedule=${{env.schedule}} \
              --time-zone=${{env.time-zone}} \
