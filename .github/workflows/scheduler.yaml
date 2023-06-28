@@ -55,7 +55,7 @@ jobs:
       - name: Set the environment variables
         run: |
           sed "" scheduler/start_program.env >> $GITHUB_ENV
-          
+
 
       - name: Deploy the Scheduler - Start Program - MODIFY
         if: contains(steps.files-changed.outputs.added,'start_program.env')
@@ -70,4 +70,18 @@ jobs:
              --http-method=POST \
              --message-body='{"action":"start"}'
              fi
+
+      - name: Deploy the Scheduler - Start Program - ADD
+        if: contains(steps.files-changed.outputs.modified,'start_program.env')
+        run: |
+            echo "Start Program env has been added."
+            gcloud scheduler jobs create http notify-start-program \
+            --description="Scheduler to trigger start of a program" \
+            --schedule=${{env.schedule}} \
+            --time-zone=${{env.time-zone}} \
+            --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_NAME}}" \
+            --location=${{env.REGION}} \
+            --http-method=POST \
+            --message-body='{"action":"start"}'
+            fi
 
