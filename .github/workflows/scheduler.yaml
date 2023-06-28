@@ -8,8 +8,6 @@ on:
     paths:
       - 'scheduler/**'
 
-  workflow_dispatch:
-
 env:
   BRANCH-NAME: ${GITHUB_REF##*/}
   CF_NAME: crontab
