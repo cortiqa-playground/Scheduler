@@ -111,3 +111,32 @@ jobs:
              --location=${{env.REGION}} \
              --http-method=POST \
              --message-body='{"action":"end"}'
+
+      - name: Set the environment variables
+        run: |
+          sed "" scheduler/program_activation.env >> $GITHUB_ENV
+
+      - name: Deploy the Scheduler - Program Activation - MODIFY
+        if: contains(steps.files-changed.outputs.modified,'program_activation.env')
+        run: |
+             echo "program activation env has been modified"
+             gcloud scheduler jobs update http program-activation \
+             --description="Scheduler to trigger setting up of start / end of Program" \
+             --schedule=${{env.schedule}} \
+             --time-zone=${{env.time-zone}} \
+             --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+             --location=${{env.REGION}} \
+             --http-method=POST
+
+      - name: Deploy the Scheduler - Program Activation - ADD
+        if: contains(steps.files-changed.outputs.added,'program_activation.env')
+        run: |
+             echo "program activation env has been added"
+             gcloud scheduler jobs create http program-activation \
+             --description="Scheduler to trigger setting up of start / end of Program" \
+             --schedule=${{env.schedule}} \
+             --time-zone=${{env.time-zone}} \
+             --uri="https://${{env.REGION}}-${{env.PROJECT_ID}}.cloudfunctions.net/${{env.CF_PROGRAM}}" \
+             --location=${{env.REGION}} \
+             --http-method=POST
+             
