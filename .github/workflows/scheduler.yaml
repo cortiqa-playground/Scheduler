@@ -27,10 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set Environment values
-        uses: ./.github/actions/setvars
-        with:
-          varFilePath: ./.github/variables/${{env.BRANCH-NAME}}.env
                      
       - name: Get changed files
         uses: jitterbit/get-changed-files@v1
