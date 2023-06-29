@@ -1,0 +1,40 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "change logs",
+  "main": "index.js",
+  "dependencies": {
+    "@digitalroute/cz-conventional-changelog-for-jira": "^8.0.1",
+    "bluebird": "^3.7.2",
+    "changelog.md": "^1.1.0",
+    "commander": "^2.20.3",
+    "commitizen": "^4.3.0",
+    "generate-changelog": "^1.8.0",
+    "github-url-from-git": "^1.5.0"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "test": "test",
+    "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
+    "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
+    "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@digitalroute/cz-conventional-changelog-for-jira"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cortiqa-playground/Scheduler.git"
+  },
+  "keywords": [
+    "change-log"
+  ],
+  "author": "Saikiran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cortiqa-playground/Scheduler/issues"
+  },
+  "homepage": "https://github.com/cortiqa-playground/Scheduler#readme"
+}
