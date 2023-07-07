@@ -9,7 +9,6 @@
     "changelog.md": "^1.1.0",
     "commander": "^2.20.3",
     "commitizen": "^4.3.0",
-    "generate-changelog": "^1.8.0",
     "github-url-from-git": "^1.5.0"
   },
   "scripts": {
@@ -36,7 +35,8 @@
   "bugs": {
     "url": "https://github.com/cortiqa-playground/Scheduler/issues"
   },
-  "homepage": "https://github.com/cortiqa-playground/Scheduler#readme"
+  "homepage": "https://github.com/cortiqa-playground/Scheduler#readme",
+  "devDependencies": {
+    "generate-changelog": "^1.8.0"
+  }
 }
-
-
