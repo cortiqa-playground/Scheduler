@@ -1,7 +1,7 @@
 {
   "name": "package.json",
   "version": "1.0.0",
-  "description": "change logs",
+  "description": "changelogs",
   "main": "index.js",
   "scripts": {
     "commit": "git-cz",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@digitalroute/cz-conventional-changelog-for-jira": "^8.0.1",
+    "changelog.md": "^1.1.0",
     "commitizen": "^4.3.0"
   }
 }
