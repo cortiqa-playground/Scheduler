@@ -30,4 +30,4 @@ jobs:
 
       - name: Display the changelog
         run: | 
-          echo CHANGELOG.md
+          cat CHANGELOG.md
