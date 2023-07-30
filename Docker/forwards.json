@@ -1,0 +1,1 @@
+[{"protocol":"tcp","dst_prefix":"192.168.65.128/32","dst_port":3128,"path":"\\\\.\\pipe\\dockerNetworkProxy"}]
