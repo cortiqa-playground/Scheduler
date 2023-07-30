@@ -1,0 +1,36 @@
+name: Cache Restore
+
+on:
+  push:
+
+  workflow_dispatch:
+
+env:
+  BRANCH-NAME: ${GITHUB_REF##*/}
+
+jobs:
+  restore-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Delete Docker
+        run: |
+          rm -rf Docker
+          echo "Deleted the Docker folder"
+
+      - name: Restore Docker local
+        id: cache-docker
+        uses: actions/cache/restore@v3
+        with: 
+          path: Docker-cache
+          key: ${{runner.os}}-dock
+    
+      - name: cache-hit-check
+        if: steps.cache-docker.outputs.cache-hit != 'true'
+        run: echo "Cache hit isnt there!! Restore failed"
+
+      - name: Dir listing
+        run: | 
+          ls -lrt 
