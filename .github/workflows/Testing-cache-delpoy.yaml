@@ -29,11 +29,12 @@ jobs:
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
 
-      - name: Install node
-        uses: actions/setup-node@v4
+      - name: cache packages
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules  
         with:
           node-version: 'v20.12.1'
           node-version-file: 'stable'
-          cache: true
           cache-key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
           cache-path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
