@@ -21,5 +21,5 @@ jobs:
         with:
           node-version: '20.12.1'
           check-latest: true
-          key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
+          cache: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
           cache-dependency-path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
