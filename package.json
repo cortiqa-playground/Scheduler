@@ -28,6 +28,7 @@
   "dependencies": {
     "@digitalroute/cz-conventional-changelog-for-jira": "^8.0.1",
     "changelog.md": "^1.1.0",
-    "commitizen": "^4.3.0"
+    "commitizen": "^4.3.0",
+    "node-cache": "^5.1.2"
   }
 }
