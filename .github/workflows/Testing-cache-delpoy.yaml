@@ -13,28 +13,13 @@ jobs:
   build-firebase-functions:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Dependencies
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '20'
-          check-latest: true
-
       - name: Checkout
         uses: actions/checkout@v4
 
-      - run: |
-          npm install
-          npm install node-cache
-        
-      - name: Install Firebase Tools
-        run: npm install -g firebase-tools
-
-      - name: cache packages
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules  
+      - name: Install Dependencies
+        uses: actions/setup-node@v4
         with:
-          node-version: 'v20.12.1'
+          node-version: '20.12.1'
           node-version-file: 'stable'
           key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
           path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
