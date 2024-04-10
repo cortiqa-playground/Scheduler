@@ -36,5 +36,5 @@ jobs:
         with:
           node-version: 'v20.12.1'
           node-version-file: 'stable'
-          cache-key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
-          cache-path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
+          key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
+          path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
