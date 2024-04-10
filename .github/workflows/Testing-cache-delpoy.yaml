@@ -20,6 +20,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.12.1'
-          node-version-file: 'stable'
           key: 'node-:os:-:channel:-:version:-:arch:-:hash:' 
-          path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
+          cache-dependency-path: '${{ runner.tool_cache }}/node/:channel:-:version:-:arch:'
