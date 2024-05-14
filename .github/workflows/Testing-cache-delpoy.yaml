@@ -19,4 +19,5 @@ jobs:
           node-version: '20'
           check-latest: true
           cache: 'npm'
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
           cache-dependency-path: package-lock.json
