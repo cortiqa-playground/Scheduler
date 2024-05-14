@@ -19,5 +19,4 @@ jobs:
           node-version: '20'
           check-latest: true
           cache: 'npm'
-          cache-dependency-path: subdir/package-lock.json
-          
+          cache-dependency-path: package-lock.json
