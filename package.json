@@ -7,7 +7,7 @@
     "commit": "git-cz",
     "test": "test",
     "build":"",
-    "list":"npm -g list"
+    "list":"npm list"
   },
   "config": {
     "commitizen": {
