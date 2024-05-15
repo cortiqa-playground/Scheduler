@@ -6,7 +6,8 @@
   "scripts": {
     "commit": "git-cz",
     "test": "test",
-    "build":""
+    "build":"",
+    "list":"npm -g list"
   },
   "config": {
     "commitizen": {
