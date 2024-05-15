@@ -29,11 +29,11 @@ jobs:
       #   continue-on-error: true
       #   run: npm run list
 
-      - name: List the state of node modules
-        run: npm run list
-
       - name: Install dependencies
         run: npm install
+
+      - name: List the state of node modules
+        run: npm run list
 
       - name: Build
         run: npm run build
