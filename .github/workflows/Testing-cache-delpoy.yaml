@@ -8,7 +8,6 @@ on:
 
   workflow_dispatch:
 
-
 jobs:
   build-firebase-functions:
     runs-on: ubuntu-latest
@@ -18,18 +17,16 @@ jobs:
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-build-
 
-      # - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
       - name: Install dependencies
         run: npm install
-      
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+
       - name: List the state of node modules
         run: npm run list
 
