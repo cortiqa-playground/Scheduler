@@ -33,4 +33,5 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          cd functions
           npm install
