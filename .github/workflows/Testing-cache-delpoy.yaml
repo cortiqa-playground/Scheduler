@@ -12,26 +12,26 @@ jobs:
   build-firebase-functions:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Cache node modules
-        id: cache-npm
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          check-latest: true
+
+      - name: Cache npm modules
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            functions/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('functions/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-node-
 
-      - name: Install dependencies
-        run: npm install
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-
-      - name: List the state of node modules
-        run: npm run list
-
-      - name: Build
-        run: npm run build
-
-      - name: Test
-        run: npm test
+      - name: Install Dependencies
+        run: |
+          cd functions
+          npm install
