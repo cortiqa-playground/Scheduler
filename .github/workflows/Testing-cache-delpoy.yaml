@@ -16,6 +16,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          check-latest: true  
+
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v4
@@ -38,4 +44,3 @@ jobs:
 
       - name: Test
         run: npm test
-        
